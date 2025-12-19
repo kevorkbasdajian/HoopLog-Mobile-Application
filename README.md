@@ -475,7 +475,6 @@ All network requests go through `config/api.js`:
 
 ```javascript
 export const apiCall = async (endpoint, options = {}) => {
-  const { logout } = useAuth();
   try {
     const token = await getAuthToken();
 
@@ -497,8 +496,13 @@ export const apiCall = async (endpoint, options = {}) => {
 
     if (response.status === 401 || response.status === 403) {
       await SecureStore.deleteItemAsync("userToken");
+      await SecureStore.deleteItemAsync("user");
 
-      await logout();
+      if (logoutCallback) {
+        logoutCallback();
+      }
+
+      throw new Error("Session expired. Please login again.");
     }
 
     if (!response.ok) {
