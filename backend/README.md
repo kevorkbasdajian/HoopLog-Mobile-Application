@@ -18,6 +18,7 @@
 - [Database Setup](#database-setup)
 - [Running the Server](#running-the-server)
 - [API Documentation](#api-documentation)
+- [Postman Collection](#postman-collection)
 - [Additional Notes](#additional-notes)
 
 
@@ -88,6 +89,9 @@ backend/
 ├── prisma/
 │   ├── schema.prisma
 │   └── seed.js (optional)
+│
+├── postman/
+│   └── HoopLog_API.postman_collection.json
 │
 ├── .env
 ├── .env.example
@@ -573,6 +577,32 @@ Authorization: Bearer <your_jwt_token>
     "vibrationEffects": true
   }
   ```
+
+---
+
+## Postman Collection
+
+A complete Postman collection for testing all API endpoints is available in the repository.
+
+### Location
+```
+postman/HoopLog_API.postman_collection.json
+```
+
+### Import Instructions
+
+1. Open Postman
+2. Click **Import** in the top left
+3. Select the file from the `postman/` directory
+4. The collection will be imported with all endpoints organized in folders
+
+### Collection Structure
+
+- **Authentication** - Sign Up, Login
+- **Sessions** - All session-related endpoints
+- **Quotes** - Random quote retrieval
+- **User** - Profile management
+- **Settings** - User settings management
 
 ---
 
