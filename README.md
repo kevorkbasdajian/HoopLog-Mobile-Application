@@ -475,20 +475,40 @@ All network requests go through `config/api.js`:
 
 ```javascript
 export const apiCall = async (endpoint, options = {}) => {
-  const token = await getAuthToken();
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  const { logout } = useAuth();
+  try {
+    const token = await getAuthToken();
+
+    const headers = {
+      "Content-Type": "application/json",
+      ...options.headers,
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401 || response.status === 403) {
+      await SecureStore.deleteItemAsync("userToken");
+
+      await logout();
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || "Request failed");
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
-  // Error handling and JSON parsing
-  return { success, data, error };
 };
 ```
 
