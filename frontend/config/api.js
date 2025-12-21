@@ -1,6 +1,12 @@
 import * as SecureStore from "expo-secure-store";
+import { useAuth } from "../context/AuthContext.js";
+export const API_URL = "http://192.168.1.7:8080";
 
-export const API_URL = "http://192.168.1.6:8080";
+let logoutCallback = null;
+
+export const setLogoutCallback = (callback) => {
+  logoutCallback = callback;
+};
 
 const getAuthToken = async () => {
   return await SecureStore.getItemAsync("userToken");
@@ -26,6 +32,17 @@ export const apiCall = async (endpoint, options = {}) => {
     });
 
     const data = await response.json();
+
+    if (response.status === 401 || response.status === 403) {
+      await SecureStore.deleteItemAsync("userToken");
+      await SecureStore.deleteItemAsync("user");
+
+      if (logoutCallback) {
+        logoutCallback();
+      }
+
+      throw new Error("Session expired. Please login again.");
+    }
 
     if (!response.ok) {
       throw new Error(data.message || "Request failed");

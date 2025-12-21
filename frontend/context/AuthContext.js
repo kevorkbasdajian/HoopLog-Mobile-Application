@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
-import { apiCall } from "../config/api";
+import { apiCall, setLogoutCallback } from "../config/api";
 
 const AuthContext = createContext(null);
 
@@ -16,6 +16,18 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     restoreUser();
+  }, []);
+
+  useEffect(() => {
+    setLogoutCallback(() => {
+      setUserToken(null);
+      setUser(null);
+      setPendingAuth(null);
+    });
+
+    return () => {
+      setLogoutCallback(null);
+    };
   }, []);
 
   const restoreUser = async () => {

@@ -152,6 +152,9 @@ export async function deleteSession({ userId, sessionId }) {
   if (session.ownerId !== userId)
     throw { status: 403, message: "Unauthorized to delete this session" };
 
+  await prisma.userSessionProgress.deleteMany({
+    where: { sessionId: Number(sessionId) },
+  });
   await prisma.sessionData.delete({
     where: { id: Number(sessionId) },
   });

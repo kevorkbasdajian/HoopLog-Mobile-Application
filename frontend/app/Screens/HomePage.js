@@ -232,7 +232,9 @@ export default function HomePage() {
           loop
           style={{ width: 150, height: 150 }}
         />
-        <Text style={styles.loadingText}>Loading your sessions...</Text>
+        <Text style={[styles.loadingText, { color: Colors.orange }]}>
+          Loading your sessions...
+        </Text>
       </View>
     );
   }
