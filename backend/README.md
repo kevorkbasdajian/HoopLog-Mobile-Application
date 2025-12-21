@@ -610,7 +610,7 @@ postman/HoopLog_API.postman_collection.json
 
 ### Database Schema Overview
 
-The application uses four main models:
+The application uses five main models:
 
 1. **User**: Stores user authentication and profile data
 2. **SessionData**: Stores training sessions (both prebuilt and user-created)
