@@ -1,5 +1,3 @@
-// DEBUGGING VERSION - Replace your entire SessionDetailsPage.js with this
-
 import {
   useFocusEffect,
   useNavigation,
